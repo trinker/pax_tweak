@@ -1,5 +1,28 @@
 function(package, name, qpath, path, github.user, ...){
  
+    ## add .Rprofile
+    rprofile <- "https://raw.githubusercontent.com/trinker/pax_tweak/master/materials/.Rprofile"
+    rprofile <- try(readLines(curl::curl(rprofile)))
+    if (!inherits("try-error", rprofile)){
+        message("  -> Adding:............  .Rprofile") 
+        cat(paste(rprofile, collapse="\n"), file = qpath(".Rprofile."))
+    }
+
+    ## Update Readme
+    readme_rmd <- suppressWarnings(readLines(qpath("README.Rmd")))
+    locrmd <- grep("^## Installation", readme_rmd)
+    readme_rmd[locrmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
+        readme_rmd[locrmd])
+    message("  -> Upgrading:.........  README.Rmd") 
+    cat(paste(readme_rmd, collapse="\n"), file=qpath("README.Rmd"))
+
+    readme_md <- suppressWarnings(readLines(qpath("README.md")))
+    locmd <- grep("^## Installation", readme_md)
+    readme_md[locmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
+        readme_md[locmd])
+    message("  -> Upgrading:.........  README.md") 
+    cat(paste(readme_md, collapse="\n"), file=qpath("README.md"))    
+    
     ## Add extra file header for the static docs index that is usually taken from README
     extra_staticdoc <- c(
         "<p><img src=\"https://raw.githubusercontent.com/%s/%s/master/inst/%s_logo/r_%s.png\" width=\"300\"/><br/>", 
@@ -53,29 +76,6 @@ function(package, name, qpath, path, github.user, ...){
         message("      -> Adding:............  maintenance.R") 
         cat(paste(main, collapse="\n"), file = qpath("inst/maintenance.R"))
     }
-
-    ## add .Rprofile
-    rprofile <- "https://raw.githubusercontent.com/trinker/pax_tweak/master/materials/.Rprofile"
-    rprofile <- try(readLines(curl::curl(rprofile)))
-    if (!inherits("try-error", rprofile)){
-        message("  -> Adding:............  .Rprofile") 
-        cat(paste(rprofile, collapse="\n"), file = qpath(".Rprofile."))
-    }
-
-    ## Update Readme
-    readme_rmd <- readLines(qpath("README.Rmd"))
-    locrmd <- grep("^## Installation", readme_rmd)
-    readme_rmd[locrmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
-        readme_rmd[locrmd])
-    message("  -> Upgrading:..........  README.Rmd") 
-    cat(paste(readme_rmd, collapse="\n"), file=qpath("README.Rmd"))
-
-    readme_md <- readLines(qpath("README.md"))
-    locmd <- grep("^## Installation", readme_md)
-    readme_md[locmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
-        readme_md[locmd])
-    message("  -> Upgrading:..........  README.md") 
-    cat(paste(readme_md, collapse="\n"), file=qpath("README.md"))
 
     ## Update .Rbuildignore
     rbuild <- suppressWarnings(readLines(qpath(".Rbuildignore")))
