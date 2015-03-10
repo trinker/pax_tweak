@@ -1,4 +1,4 @@
-function(package, name, qpath, path, ...){
+function(package, name, qpath, path, githubu.user, ...){
  
     ## Add extra file header for the static docs index that is usually taken from README
     extra_staticdoc <- c(
