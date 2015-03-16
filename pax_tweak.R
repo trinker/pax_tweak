@@ -11,15 +11,15 @@ function(package, name, qpath, path, github.user, ...){
     ## Update Readme
     readme_rmd <- suppressWarnings(readLines(qpath("README.Rmd")))
     locrmd <- grep("^## Installation", readme_rmd)
-    readme_rmd[locrmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
-        readme_rmd[locrmd])
+    rdmimg <- sprintf("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n", 
+        package, package)
+    readme_rmd[locrmd] <- paste0(rdmimg, readme_rmd[locrmd])
     message("  -> Upgrading:.........  README.Rmd") 
     cat(paste(readme_rmd, collapse="\n"), file=qpath("README.Rmd"))
 
     readme_md <- suppressWarnings(readLines(qpath("README.md")))
     locmd <- grep("^## Installation", readme_md)
-    readme_md[locmd] <- paste0("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n",
-        readme_md[locmd])
+    readme_md[locmd] <- paste0(rdmimg, readme_md[locmd])
     message("  -> Upgrading:.........  README.md") 
     cat(paste(readme_md, collapse="\n"), file=qpath("README.md"))    
     
