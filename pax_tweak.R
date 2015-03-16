@@ -11,7 +11,7 @@ function(package, name, qpath, path, github.user, ...){
     ## Update Readme
     readme_rmd <- suppressWarnings(readLines(qpath("README.Rmd")))
     locrmd <- grep("^## Installation", readme_rmd)
-    rdmimg <- sprintf("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%\", alt=\"\">  \n\n", 
+    rdmimg <- sprintf("<img src=\"inst/%s_logo/r_%s.png\" width=\"20%%\", alt=\"\">  \n\n", 
         package, package)
     readme_rmd[locrmd] <- paste0(rdmimg, readme_rmd[locrmd])
     message("  -> Upgrading:.........  README.Rmd") 
