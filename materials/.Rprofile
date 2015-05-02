@@ -54,7 +54,7 @@ md_toc <- function(path = "README.md", repo = basename(getwd())){
     inds <- 1:(which(!grepl("^\\s*-", x))[1] - 1)
     temp <- gsub("(^[ -]+)(.+)", "\\1", x[inds])
     content <- gsub("^[ -]+", "", x[inds])
-    toc <- paste(c("\nTable of Contents\n------------\n",
+    toc <- paste(c("\nTable of Contents\n============\n",
         sprintf("%s[%s](#%s)", temp, content, gsub("\\s", "-", tolower(content))),
         "\nInstallation\n============\n"),
         collapse = "\n"
