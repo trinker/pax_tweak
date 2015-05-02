@@ -56,7 +56,7 @@ md_toc <- function(path = "README.md", repo = basename(getwd())){
     content <- gsub("^[ -]+", "", x[inds])
     toc <- paste(c("\nTable of Contents\n------------\n",
         sprintf("%s[%s](#%s)", temp, content, gsub("\\s", "-", tolower(content))),
-        "\nInstallation\n------------\n"),
+        "\nInstallation\n============\n"),
         collapse = "\n"
     )
 
@@ -66,7 +66,7 @@ md_toc <- function(path = "README.md", repo = basename(getwd())){
     x[inst_loc] <- toc
     x <- x[-c(1 + inst_loc)]
 
-    cat(paste(c(sprintf("%s\n------------\n", repo), x), collapse = "\n"), file = path)
+    cat(paste(c(sprintf("%s\n============\n", repo), x), collapse = "\n"), file = path)
     message("README.md updated")
 }
 
