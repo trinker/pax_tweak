@@ -16,7 +16,7 @@ function(package, name, qpath, path, github.user, ...){
     readme_rmd[locrmd] <- paste0(rdmimg, readme_rmd[locrmd])
     message("  -> Upgrading:.........  README.Rmd") 
     cat(paste(readme_rmd, collapse="\n"), file=qpath("README.Rmd"))
-
+browser()
     readme_md <- suppressWarnings(readLines(qpath("README.md")))
     locmd <- grep("^## Installation", readme_md)
     readme_md[locmd] <- paste0(rdmimg, readme_md[locmd])
