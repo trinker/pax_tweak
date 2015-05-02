@@ -40,7 +40,7 @@ function(package, name, qpath, path, github.user, ...){
     readme_rmd <- readme_rmd[-c(1 + inst_loc)]
 
     message("  -> Upgrading:.........  README.md") 
-    cat(paste(c(sprintf("%s\n============\n", repo), readme_rmd), 
+    cat(paste(c(sprintf("%s\n============\n", package), readme_rmd), 
         collapse = "\n"), file = qpath("README.md"))
 
     ## Add extra file header for the static docs index that is usually taken from README
