@@ -48,3 +48,25 @@ update_news <- function(repo = basename(getwd())) {
     cat(paste(News, collapse = "\n"), file = "NEWS.md")
     message("news.md updated")
 }
+
+md_toc <- function(path = "README.md", repo = basename(getwd())){
+    x <- suppressWarnings(readLines(path))
+    inds <- 1:(which(!grepl("^\\s*-", x))[1] - 1)
+    temp <- gsub("(^[ -]+)(.+)", "\\1", x[inds])
+    content <- gsub("^[ -]+", "", x[inds])
+    toc <- paste(c("\nTable of Contents\n------------\n",
+        sprintf("%s[%s](#%s)", temp, content, gsub("\\s", "-", tolower(content))),
+        "\nInstallation\n------------\n"),
+        collapse = "\n"
+    )
+
+    x <- x[(max(inds) + 1):length(x)]
+
+    inst_loc <- which(grepl("^Installation$", x))[1]
+    x[inst_loc] <- toc
+    x <- x[-c(1 + inst_loc)]
+
+    cat(paste(c(sprintf("%s\n------------\n", repo), x), collapse = "\n"), file = path)
+    message("README.md updated")
+}
+
