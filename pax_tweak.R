@@ -16,16 +16,16 @@ function(package, name, qpath, path, github.user, ...){
     readme_rmd[locrmd] <- paste0(rdmimg, readme_rmd[locrmd])
     message("  -> Upgrading:.........  README.Rmd") 
     cat(paste(readme_rmd, collapse="\n"), file=qpath("README.Rmd"))
-browser()
+
     readme_md <- suppressWarnings(readLines(qpath("README.md")))
     locmd <- grep("^## Installation", readme_md)
     readme_md[locmd] <- paste0(rdmimg, readme_md[locmd])
     cat(paste(readme_md, collapse="\n"), file=qpath("README.md")) 
 
-    readme_rmd <- suppressWarnings(readLines(qpath("README.Rmd")))
-    inds <- 1:(which(!grepl("^\\s*-", readme_rmd))[1] - 1)
-    temp <- gsub("(^[ -]+)(.+)", "\\1", readme_rmd[inds])
-    content <- gsub("^[ -]+", "", readme_rmd[inds])
+    readme_md <- suppressWarnings(readLines(qpath("README.md")))
+    inds <- 1:(which(!grepl("^\\s*-", readme_md))[1] - 1)
+    temp <- gsub("(^[ -]+)(.+)", "\\1", readme_md[inds])
+    content <- gsub("^[ -]+", "", readme_md[inds])
     toc <- paste(c("\nTable of Contents\n============\n",
         sprintf("%s[%s](#%s)", temp, content, gsub("[;/?:@&=+$,]", "",
             gsub("\\s", "-", tolower(content)))),
@@ -33,14 +33,14 @@ browser()
         collapse = "\n"
     )
 
-    readme_rmd <- readme_rmd[(max(inds) + 1):length(readme_rmd)]
+    readme_md <- readme_md[(max(inds) + 1):length(readme_md)]
 
-    inst_loc <- which(grepl("^Installation$", readme_rmd))[1]
-    readme_rmd[inst_loc] <- toc
-    readme_rmd <- readme_rmd[-c(1 + inst_loc)]
+    inst_loc <- which(grepl("^Installation$", readme_md))[1]
+    readme_md[inst_loc] <- toc
+    readme_md <- readme_md[-c(1 + inst_loc)]
 
     message("  -> Upgrading:.........  README.md") 
-    cat(paste(c(sprintf("%s\n============\n", package), readme_rmd), 
+    cat(paste(c(sprintf("%s\n============\n", package), readme_md), 
         collapse = "\n"), file = qpath("README.md"))
 
     ## Add extra file header for the static docs index that is usually taken from README
