@@ -79,7 +79,12 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
     }
     x <- x[unique(c(1:beg, z))]
 
+    a <- grep("<table>", x)
+    b <- grep("</table>", x)
+
+    inds <- mapply(function(a, b){ a:b}, a, b)
+    x[inds] <- gsub("\\\\_", "_", x[inds])
+
     cat(paste(c(sprintf("%s\n============\n", repo), x), collapse = "\n"), file = path)
     message("README.md updated")
 }
-
