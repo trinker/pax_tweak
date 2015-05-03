@@ -49,6 +49,19 @@ update_news <- function(repo = basename(getwd())) {
     message("news.md updated")
 }
 
+update_date <- function(){
+    desc <- read.dcf("DESCRIPTION")
+	if (Sys.Date() > desc[,"Date"]) {
+		desc[,"Date"] <- as.character(Sys.Date())
+        write.dcf(desc, "DESCRIPTION")
+		message("Date updated")
+	} else {
+		message("Date is current")
+	}
+}
+
+update_date()
+
 md_toc <- function(path = "README.md", repo = basename(getwd()),
     insert.loc = "Installation"){
 
