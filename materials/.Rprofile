@@ -49,7 +49,9 @@ update_news <- function(repo = basename(getwd())) {
     message("news.md updated")
 }
 
-md_toc <- function(path = "README.md", repo = basename(getwd())){
+md_toc <- function(path = "README.md", repo = basename(getwd()),
+    insert.loc = "Installation"){
+
     x <- suppressWarnings(readLines(path))
     inds <- 1:(which(!grepl("^\\s*-", x))[1] - 1)
     temp <- gsub("(^[ -]+)(.+)", "\\1", x[inds])
@@ -57,20 +59,25 @@ md_toc <- function(path = "README.md", repo = basename(getwd())){
     toc <- paste(c("\nTable of Contents\n============\n",
         sprintf("%s[%s](#%s)", temp, content, gsub("[;/?:@&=+$,]", "",
             gsub("\\s", "-", tolower(content)))),
-        "\nInstallation\n============\n"),
+        sprintf("\n%s\n============\n", insert.loc)),
         collapse = "\n"
     )
 
     x <- x[(max(inds) + 1):length(x)]
 
-    inst_loc <- which(grepl("^Installation$", x))[1]
+    inst_loc <- which(grepl(sprintf("^%s$", insert.loc), x))[1]
     x[inst_loc] <- toc
     x <- x[-c(1 + inst_loc)]
 
     beg <- grep("^You are welcome", x)
     y <- paste(x[beg:(beg +3)], collapse=" ")
     x[beg] <- paste0(gsub("(\\\\)[*]", "\n*", y), "\n")
-    x <- x[c(1:beg, (beg + 4):length(x))]
+    if((beg + 4) > length(x)){
+        z <- beg
+    } else {
+        z <- (beg + 4):length(x)
+    }
+    x <- x[unique(c(1:beg, z))]
 
     cat(paste(c(sprintf("%s\n============\n", repo), x), collapse = "\n"), file = path)
     message("README.md updated")
