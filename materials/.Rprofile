@@ -67,6 +67,11 @@ md_toc <- function(path = "README.md", repo = basename(getwd())){
     x[inst_loc] <- toc
     x <- x[-c(1 + inst_loc)]
 
+    beg <- grep("^You are welcome", x)
+    y <- paste(x[beg:(beg +3)], collapse=" ")
+    x[beg] <- paste0(gsub("(\\\\)[*]", "\n*", y), "\n")
+    x <- x[c(1:beg, (beg + 4):length(x))]
+
     cat(paste(c(sprintf("%s\n============\n", repo), x), collapse = "\n"), file = path)
     message("README.md updated")
 }
