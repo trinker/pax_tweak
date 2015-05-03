@@ -92,7 +92,7 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
     }
     x <- x[unique(c(1:beg, z))]
 
-    a <- grep("<table>", "x")
+    a <- grep("<table>", x)
     if (!identical(integer(0), a)){
         b <- grep("</table>", x)
         inds <- unlist(mapply(function(a, b){ a:b}, a, b))
