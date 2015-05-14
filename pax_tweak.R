@@ -103,8 +103,15 @@ function(package, name, qpath, path, github.user, ...){
     cat(paste(unique(c(rbuild, "inst/build.R", sprintf("inst/%s_logo", package), 
         "inst/staticdocs", "inst/extra_statdoc", "inst/maintenance.R", "\n")), 
         collapse="\n"), file = qpath(".Rbuildignore."))
+ 
+    ## Add CITATION to inst directory
+    citation <- "https://raw.githubusercontent.com/trinker/pax_tweak/master/materials/CITATION"
+    citation <- suppressWarnings(try(readLines(curl::curl(citation))))
+    yr <- format(Sys.Date(), format="%Y")
+    vec <- c(package, package, yr, github.user, package, yr, package, github.user, package)
+    message(sprintf("    -> Creating:..........  inst/CITATION", package))
+    cat(do.call(sprintf, c(list(paste(citation, collapse = "\n")), vec)), 
+        file = qpath("inst/CITATION"))
 
-browser()    
-    
     message(sprintf("%s has been tweaked!", package))
 }
