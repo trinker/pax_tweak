@@ -104,5 +104,7 @@ function(package, name, qpath, path, github.user, ...){
         "inst/staticdocs", "inst/extra_statdoc", "inst/maintenance.R", "\n")), 
         collapse="\n"), file = qpath(".Rbuildignore."))
 
+browser()    
+    
     message(sprintf("%s has been tweaked!", package))
 }
