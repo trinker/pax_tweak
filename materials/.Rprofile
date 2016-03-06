@@ -62,16 +62,34 @@ update_date <- function(){
 
 update_date()
 
+twitter <- "[![Follow](https://img.shields.io/twitter/follow/tylerrinker.svg?style=social)](https://twitter.com/intent/follow?screen_name=tylerrinker)"
+
+
 md_toc <- function(path = "README.md", repo = basename(getwd()),
     insert.loc = "Installation"){
 
     x <- suppressWarnings(readLines(path))
-    inds <- 1:(which(!grepl("^\\s*-", x))[1] - 1)
+
+
+
+    inds <- 1:(which(!grepl("(^\\s*-)|(\\]\\(#)", x))[1] - 1)
+
     temp <- gsub("(^[ -]+)(.+)", "\\1", x[inds])
     content <- gsub("^[ -]+", "", x[inds])
+    bkna <- grepl("^[^[]", content)
+
+    if (sum(bkna) > 0){
+        bkn <- which(bkna)
+        for (i in bkn){
+            content[i - 1] <- paste(content[i - 1], content[i])
+        }
+        content <- content[!bkna]
+        temp <- temp[!bkna]
+    }
+
     toc <- paste(c("\nTable of Contents\n============\n",
-        sprintf("%s[%s](#%s)", temp, content, gsub("[;/?:@&=+$,]", "",
-            gsub("\\s", "-", tolower(content)))),
+        sprintf("%s[%s](%s)", temp, c(qdapRegex::ex_square(content)), gsub("[;/?:@&=+$,.]", "",
+            gsub("\\s", "-", c(tolower(qdapRegex::ex_round(content)))))),
         sprintf("\n%s\n============\n", insert.loc)),
         collapse = "\n"
     )
@@ -98,6 +116,13 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
         inds <- unlist(mapply(function(a, b){ a:b}, a, b))
         x[inds] <- gsub("\\\\_", "_", x[inds])
     }
-    cat(paste(c(sprintf("%s\n============\n", repo), x), collapse = "\n"), file = path)
+
+    if(!grepl("^You", grep("friendly e-mail*", x, value=TRUE)) && substring(grep("friendly e-mail*", x, value=TRUE), 1, 1) != "*"){
+        loc_fe <- grep("friendly e-mail*", x)
+        x[loc_fe] <- substring(grep("friendly e-mail*", x, value=TRUE), 2)
+        x[loc_fe -1] <- gsub("\\n$", "", x[loc_fe -1 ])
+    }
+    x <- gsub("<!-- -->", "", x, fixed=TRUE)
+    cat(paste(c(sprintf("%s   %s\n============\n", repo, twitter), x), collapse = "\n"), file = path)
     message("README.md updated")
 }
