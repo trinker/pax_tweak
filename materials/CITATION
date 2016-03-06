@@ -6,11 +6,11 @@ citEntry(entry = "manual",
     author = "Tyler W. Rinker",
     organization = "University at Buffalo/SUNY",
     address = "Buffalo, New York",
-    note = "version 0.1.0",
+    note = "version 0.0.1",
     year = "%s",
     url = "http://github.com/%s/%s", 
     textVersion  = paste("Rinker, T. W. (%s).",
         "%s: ...",
-        "version 0.1.0. University at Buffalo. Buffalo, New York.",
+        "version 0.0.1. University at Buffalo. Buffalo, New York.",
         "http://github.com/%s/%s")
 )

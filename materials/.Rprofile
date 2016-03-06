@@ -23,11 +23,11 @@ update_news <- function(repo = basename(getwd())) {
     
     News <- mgsub(
         c("<", ">", "&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;", "BUG FIXES", 
-            "NEW FEATURES", "MINOR FEATURES", "CHANGES", " TRUE ", " FALSE ", 
+            "NEW FEATURES", "MINOR FEATURES", "CHANGES", "IMPROVEMENTS", " TRUE ", " FALSE ", 
             " NULL ", "TRUE.", "FALSE.", "NULL.", ":m:"), 
         c("&lt;", "&gt;", "**&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;**", 
             "**BUG FIXES**", "**NEW FEATURES**", "**MINOR FEATURES**", 
-            "**CHANGES**", " `TRUE` ", "`FALSE`.", "`NULL`.", "`TRUE`.", 
+            "**CHANGES**", "**IMPROVEMENTS**", " `TRUE` ", "`FALSE`.", "`NULL`.", "`TRUE`.", 
             " `FALSE` ", " `NULL` ", " : m : "), 
             News, trim = FALSE, fixed=TRUE)
     
