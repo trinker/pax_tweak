@@ -2,14 +2,14 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(qdap, reports)
 
 update_version <- function(ver = NULL){
-    
+
     desc <- suppressWarnings(readLines("DESCRIPTION"))
     regex <- "(^Version:\\s+\\d+\\.\\d+\\.)(\\d+)"
     loc <- grep(regex, desc)
-    ver <- ifelse(is.null(ver), as.numeric(gsub(regex, "\\2", desc[loc])) + 1, ver)    
+    ver <- ifelse(is.null(ver), as.numeric(gsub(regex, "\\2", desc[loc])) + 1, ver)
     desc[loc] <- sprintf(gsub(regex, "\\1%s", desc[loc]), ver)
     cat(paste(desc, collapse="\n"), file="DESCRIPTION")
-    
+
     cit <- suppressWarnings(readLines("inst/CITATION"))
     regex2 <- '(version\\s+\\d+\\.\\d+\\.)(\\d+)([."])'
     cit <- paste(cit, collapse="\n")
@@ -18,33 +18,33 @@ update_version <- function(ver = NULL){
 }
 
 update_news <- function(repo = basename(getwd())) {
-  
+
     News <- readLines("NEWS")
-    
+
     News <- mgsub(
-        c("<", ">", "&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;", "BUG FIXES", 
-            "NEW FEATURES", "MINOR FEATURES", "CHANGES", "IMPROVEMENTS", " TRUE ", " FALSE ", 
-            " NULL ", "TRUE.", "FALSE.", "NULL.", ":m:"), 
-        c("&lt;", "&gt;", "**&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;**", 
-            "**BUG FIXES**", "**NEW FEATURES**", "**MINOR FEATURES**", 
-            "**CHANGES**", "**IMPROVEMENTS**", " `TRUE` ", "`FALSE`.", "`NULL`.", "`TRUE`.", 
-            " `FALSE` ", " `NULL` ", " : m : "), 
+        c("<", ">", "&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;", "BUG FIXES",
+            "NEW FEATURES", "MINOR FEATURES", "CHANGES", "IMPROVEMENTS", " TRUE ", " FALSE ",
+            " NULL ", "TRUE.", "FALSE.", "NULL.", ":m:"),
+        c("&lt;", "&gt;", "**&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;**",
+            "**BUG FIXES**", "**NEW FEATURES**", "**MINOR FEATURES**",
+            "**CHANGES**", "**IMPROVEMENTS**", " `TRUE` ", "`FALSE`.", "`NULL`.", "`TRUE`.",
+            " `FALSE` ", " `NULL` ", " : m : "),
             News, trim = FALSE, fixed=TRUE)
-    
-    News <- sub(pattern="issue *# *([0-9]+)", 
+
+    News <- sub(pattern="issue *# *([0-9]+)",
         replacement=sprintf("<a href=\"https://github.com/trinker/%s/issues/\\1\">issue #\\1</a>",
-        repo), 
+        repo),
         x=News)
-    
-    News <- sub(pattern="pull request *# *([0-9]+)", 
+
+    News <- sub(pattern="pull request *# *([0-9]+)",
         replacement=sprintf("<a href=\"https://github.com/trinker/%s/issues/\\1\">pull request #\\1</a>",
-        repo), 
+        repo),
         x=News)
- 
-    News <- gsub(sprintf(" %s", repo), 
-        sprintf(" <a href=\"https://github.com/trinker/%s\" target=\"_blank\">%s</a>", 
+
+    News <- gsub(sprintf(" %s", repo),
+        sprintf(" <a href=\"https://github.com/trinker/%s\" target=\"_blank\">%s</a>",
         repo, repo), News)
-    
+
     cat(paste(News, collapse = "\n"), file = "NEWS.md")
     message("news.md updated")
 }
@@ -66,7 +66,7 @@ twitter <- "[![Follow](https://img.shields.io/twitter/follow/tylerrinker.svg?sty
 
 
 md_toc <- function(path = "README.md", repo = basename(getwd()),
-    insert.loc = "Installation"){
+    insert.loc = "Functions"){
 
     x <- suppressWarnings(readLines(path))
 
@@ -101,14 +101,11 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
     x <- x[-c(1 + inst_loc)]
 
     beg <- grep("^You are welcome", x)
-    y <- paste(x[beg:(beg +3)], collapse=" ")
-    x[beg] <- paste0(gsub("(\\\\)[*]", "\n*", y), "\n")
-    if((beg + 4) > length(x)){
-        z <- beg
-    } else {
-        z <- (beg + 4):length(x)
-    }
-    x <- x[unique(c(1:beg, z))]
+    end <- grep("compose a friendly", x)
+    
+    x[beg] <- sprintf(contact, repo, repo)
+    
+    x <- x[!seq_along(x) %in% (1+beg:end)]
 
     a <- grep("<table>", x)
     if (!identical(integer(0), a)){
@@ -117,12 +114,17 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
         x[inds] <- gsub("\\\\_", "_", x[inds])
     }
 
-    if(!grepl("^You", grep("friendly e-mail*", x, value=TRUE)) && substring(grep("friendly e-mail*", x, value=TRUE), 1, 1) != "*"){
-        loc_fe <- grep("friendly e-mail*", x)
-        x[loc_fe] <- substring(grep("friendly e-mail*", x, value=TRUE), 2)
-        x[loc_fe -1] <- gsub("\\n$", "", x[loc_fe -1 ])
-    }
     x <- gsub("<!-- -->", "", x, fixed=TRUE)
     cat(paste(c(sprintf("%s   %s\n============\n", repo, twitter), x), collapse = "\n"), file = path)
     message("README.md updated")
 }
+
+contact <- paste(c(
+    "You are welcome to:    ",
+    "- submit suggestions and bug-reports at: <https://github.com/trinker/%s/issues>    ",
+    "- send a pull request on: <https://github.com/trinker/%s/>    ",
+    "- compose a friendly e-mail to: <tyler.rinker@gmail.com>    "
+), collapse="\n")
+    
+    
+    
