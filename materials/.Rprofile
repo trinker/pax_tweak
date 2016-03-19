@@ -123,7 +123,7 @@ contact <- paste(c(
     "You are welcome to:    ",
     "- submit suggestions and bug-reports at: <https://github.com/trinker/%s/issues>    ",
     "- send a pull request on: <https://github.com/trinker/%s/>    ",
-    "- compose a friendly e-mail to: <tyler.rinker@gmail.com>    "
+    "- compose a friendly e-mail to: <tyler.rinker@gmail.com>    \n"
 ), collapse="\n")
     
     
