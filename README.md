@@ -44,9 +44,6 @@ With the `tweak = "http://goo.gl/oL7UXO"` option set:
 +---inst
 |   |   build.R
 |   |   maintenance.R
-|   |   
-|   +---bar_logo
-|   |       r_bar.pptx
 |   |       
 |   +---extra_statdoc
 |   |       readme.R
@@ -58,9 +55,14 @@ With the `tweak = "http://goo.gl/oL7UXO"` option set:
 |       sample.R
 |       utils.R
 |       
-\---tests
-    |   testthat.R
-    |   
-    \---testthat
-            test-sample.R
++---tests
+|   |   testthat.R
+|   |   
+|   \---testthat
+|           test-sample.R
+| 
+\---tools
+    |
+    \---bar_logo
+           r_bar.pptx            
 ```
