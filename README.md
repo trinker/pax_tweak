@@ -44,12 +44,6 @@ With the `tweak = "http://goo.gl/oL7UXO"` option set:
 +---inst
 |   |   build.R
 |   |   maintenance.R
-|   |       
-|   +---extra_statdoc
-|   |       readme.R
-|   |       
-|   \---staticdocs
-|           index.R
 |           
 +---R
 |       sample.R
