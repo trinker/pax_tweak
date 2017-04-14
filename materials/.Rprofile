@@ -115,7 +115,7 @@ md_toc <- function(path = "README.md", repo = basename(getwd()),
     }
 
     x <- gsub("<!-- -->", "", x, fixed=TRUE)
-    x <- gsub('^</p>$', '</p>\n', x, fixed = TRUE)
+    x <- gsub('^</p>$', '</p>\n\n', x, fixed = FALSE)
 	
     cat(paste(c(sprintf("%s   %s\n============\n", repo, twitter), x), collapse = "\n"), file = path)
     message("README.md updated")
