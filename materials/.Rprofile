@@ -60,7 +60,7 @@ update_date <- function(){
 	}
 }
 
-update_date()
+#update_date()
 
 twitter <- "[![Follow](https://img.shields.io/twitter/follow/tylerrinker.svg?style=social)](https://twitter.com/intent/follow?screen_name=tylerrinker)"
 
