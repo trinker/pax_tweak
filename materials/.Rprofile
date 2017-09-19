@@ -62,8 +62,8 @@ update_date <- function(){
 
 #update_date()
 
-twitter <- "[![Follow](https://img.shields.io/twitter/follow/tylerrinker.svg?style=social)](https://twitter.com/intent/follow?screen_name=tylerrinker)"
-
+#twitter <- "[![Follow](https://img.shields.io/twitter/follow/tylerrinker.svg?style=social)](https://twitter.com/intent/follow?screen_name=tylerrinker)"
+twitter <- ''
 
 md_toc <- function(path = "README.md", repo = basename(getwd()),
     insert.loc = "Functions"){
